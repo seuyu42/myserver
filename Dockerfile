@@ -2,7 +2,6 @@ FROM	debian:buster
 
 LABEL	maintainer="seuyu@student.42seoul.kr"
 
-
 COPY	srcs/. /root/
 
 RUN	apt-get -y update && apt-get -y upgrade
@@ -30,16 +29,18 @@ RUN	mv /root/default /etc/nginx/sites-available
 # wordpress 설치 및 설정
 RUN	wget https://wordpress.org/latest.tar.gz && \
 	tar -xvf latest.tar.gz && \
+	rm latest.tar.gz && \
 	mv wordpress/ var/www/html/ && \
 	chown -R www-data:www-data /var/www/html/wordpress && \
 	mv /root/wp-config.php var/www/html/wordpress
 
 #phpMyAdmin 설치 및 설정 
 RUN	wget https://files.phpmyadmin.net/phpMyAdmin/5.0.2/phpMyAdmin-5.0.2-all-languages.tar.gz && \
-		tar -xvf phpMyAdmin-5.0.2-all-languages.tar.gz && \
-		mv phpMyAdmin-5.0.2-all-languages phpmyadmin && \
-		mv phpmyadmin /var/www/html/ && \
-		mv /root/config.inc.php var/www/html/phpmyadmin
+	tar -xvf phpMyAdmin-5.0.2-all-languages.tar.gz && \
+	rm phpMyAdmin-5.0.2-all-languages.tar.gz && \
+	mv phpMyAdmin-5.0.2-all-languages phpmyadmin && \
+	mv phpmyadmin /var/www/html/ && \
+	mv /root/config.inc.php var/www/html/phpmyadmin
 
 # mysql DB설정
 RUN	service mysql start && \
